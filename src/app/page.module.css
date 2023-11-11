@@ -1,0 +1,106 @@
+.navbar {
+  background-color: #0000003b;
+  padding: 10px 0;
+  width: 100%;
+  color: #F6EAD1;
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
+
+.navbarContent {
+  padding: 10px 20px;
+  font-size: 1.5rem;
+}
+
+.main {
+  height: 100%;
+}
+
+.textStyle1 {
+  color: #A21F17;
+  text-shadow: -3px 2px 0px #E19E00;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  text-align: center;
+}
+
+.rsvp {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 500px;
+  border-radius: 30px;
+  background-color: #F6EAD1;
+}
+
+.bgCircle {
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 225px;
+  height: 225px;
+  border-radius: 225px;
+  background: #E29F00;
+}
+
+.myInput {
+  background: none;
+  width: 250px;
+  color: #A21F17;
+  border: 1px solid #3D461C;
+  border-radius: 8px;
+  height: 100%;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 0px 20px;
+}
+
+.loader {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin:15px auto;
+  position: relative;
+  color: #FFF;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  top: 50%;
+  left: 50%;
+  transform: scale(0.5) translate(0, 0);
+  background-color: #FFF;
+  border-radius: 50%;
+  animation: animloader 1s infinite ease-in-out;
+}
+.loader::before {
+  background-color: #E29F00;
+  transform: scale(0.5) translate(-48px, -48px);
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+@keyframes animloader {
+    50% {
+      transform: scale(1) translate(-50%, -50%);
+}
+}
+    
