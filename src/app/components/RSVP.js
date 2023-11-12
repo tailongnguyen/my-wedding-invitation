@@ -29,6 +29,7 @@ export default function RSVP(props) {
         console.log("sending response ...");
         
         setTimeout(callback, 2000);
+        setTimeout(props.onCancelRSVP, 3000);
     }
 
     function updateIsMoreThanOne(mode) {

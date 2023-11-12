@@ -3,7 +3,7 @@
   padding: 10px 0;
   width: 100%;
   color: #F6EAD1;
-  position: absolute;
+  position: fixed;
   display: flex;
   align-items: center;
 }
