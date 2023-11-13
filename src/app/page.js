@@ -50,35 +50,62 @@ export default function Home() {
           <RSVP onCancelRSVP={cancelRSVP}/>  
         </div>
         : 
-        <div>        
-          <div style={{position: "absolute", top: 100, left: 115}}>
-            <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>ĐÁM CƯỚI</p>
-            <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>HÀ THÀNH</p>
-          </div>
-
-          <div style={{position: "absolute", bottom: 35, left: 115}}>
-            <div>
-              <span style={{fontSize: 24, color: "#F6EAD1", marginRight: 16}} className={font8.className}>[Boston]</span>
-              <span style={{fontSize: 60, color: "#A21F17"}} className={font7.className}>Lời Tình</span>
+        <div>
+          <div style={{opacity: 1 - rsvpOpacity, transition: "opacity 2s"}}>        
+            <div style={{position: "absolute", top: 100, left: 115}}>
+              <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>ĐÁM CƯỚI</p>
+              <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>HÀ THÀNH</p>
             </div>
-            <p style={{fontSize: 30, color: "#F6EAD1"}} className={font8.className}>của Ánh Bằng - Thanh Lan</p>
+
+            <div style={{position: "absolute", bottom: 35, left: 115}}>
+              <div>
+                <span style={{fontSize: 24, color: "#F6EAD1", marginRight: 16}} className={font8.className}>[Boston]</span>
+                <span style={{fontSize: 60, color: "#A21F17"}} className={font7.className}>Lời Tình</span>
+              </div>
+              <p style={{fontSize: 30, color: "#F6EAD1"}} className={font8.className}>của Ánh Bằng - Thanh Lan</p>
+            </div>            
+
+            <div style={{position: "absolute", textAlign: "right", top: 120, right: 100}}>
+              <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Khúc Ca</p>
+              <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Tình Sâu</p>
+              <p style={{fontSize: 24, color: "#F6EAD1"}} className={font6.className}>Hà Thanh</p>
+            </div>
+
+            <div style={{position: "absolute", textAlign: "right", bottom: 10, right: 100}}>
+              <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>Đêm nhớ</p>
+              <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>ngày mong</p>
+              <p style={{fontSize: 35, color: "#FFE8D2"}} className={font1.className}>Thanh Tuyền</p>
+            </div>
           </div>
 
-          <div style={{position: "absolute", bottom: -300, left: 115}}>
-            <p style={{fontSize: 40, color: "#F6EAD1"}} className={font4.className}>Thanh xuân của chúng ta</p>
-            <p style={{fontSize: 30, marginTop: 8, color: "#E29F00"}} className={font2.className}>Bùi Anh Tuấn và Bảo Anh</p>
-          </div>
+          <div style={{height: 1200, backgroundColor: "#F6E9D1", position: "relative", marginTop: -10}}>
+            <div style={{position: "absolute", top: -120, left: 115}}>
+              <p style={{fontSize: 40, color: "#F6EAD1"}} className={font4.className}>Thanh xuân của chúng ta</p>
+              <p style={{fontSize: 30, marginTop: 8, color: "#E29F00"}} className={font2.className}>Bùi Anh Tuấn và Bảo Anh</p>
+            </div>
+            <img src="/image 1.png" style={{width: 250, height: 250, position: "absolute", left: 0, top: 0}}/>
+            <img src="/image 5.png" style={{width: 250, position: "absolute", left: 0, top: 250}}/>
+            <img src="/image 2.png" style={{width: 250, height: 250, position: "absolute", right: 0, top: 0}}/>
+            <img src="/image 6.png" style={{width: 250, position: "absolute", right: 0, top: 250}}/>
 
-          <div style={{position: "absolute", textAlign: "right", top: 120, right: 100}}>
-            <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Khúc Ca</p>
-            <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Tình Sâu</p>
-            <p style={{fontSize: 24, color: "#F6EAD1"}} className={font6.className}>Hà Thanh</p>
-          </div>
+            <p className={styles.textStyle2 + " " + font7.className} style={{textAlign: "center", paddingTop: 20}}>Với sự tham gia của</p>
 
-          <div style={{position: "absolute", textAlign: "right", bottom: 10, right: 100}}>
-            <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>Đêm nhớ</p>
-            <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>ngày mong</p>
-            <p style={{fontSize: 35, color: "#FFE8D2"}} className={font1.className}>Thanh Tuyền</p>
+            <div style={{margin: "40px auto", width: "60vw", position: "relative"}}>              
+              <div style={{backgroundColor: "#3D461C", borderRadius: 20, position: "absolute", top: "50%", 
+                          transform: "translateY(-50%)", left: "25%", height: "75%", width: "75%"}}>
+                <div className={font7.className} style={{position: "absolute", left: "10%", top: -60}}>
+                  <span className={styles.textStyle3} style={{marginRight: 10}}>Cô dâu</span>
+                  <span className={styles.textStyle1} style={{fontSize: 40}}>Nguyễn Thu Hạnh</span>
+                </div>
+
+                <div style={{position: "absolute", left: "25%", top: "20%"}}>
+                  <p  className={font6.className}  style={{fontSize: "2.5vh"}}>Em vẫn chưa muốn láy chồng ahuhu</p>
+                  <br></br>
+                  <p  className={font8.className} style={{fontSize: "2.77vh", paddingRight: 20}}>Đùa thôi, chồng mình chăm đưa mình đi chơi, đi khám phá, phải nhanh chống hoàn thành KPI 2 đứa để còn đi tiếp hahaha.</p>
+                </div>
+              </div>
+              <img style={{position: "relative", width: "40%"}} src="/Ellipse 4.png" />
+            </div>
           </div>
         </div>
       }

@@ -12,7 +12,7 @@ export default function NavBar(props) {
             className={styles.navbar + " " + dalatFont.className} 
             style={{"height": props.mode == 0 ? "100%" : "80px",  "transition": "height 1s"}}
         >
-          <div style={{display: props.mode == 0 ? "none" : "flex", justifyContent: "space-between", margin: "0 auto", maxWidth: "40%"}}>
+          <div style={{display: props.mode == 0 ? "none" : "flex", justifyContent: "space-between", margin: "0 auto", maxWidth: "50%"}}>
             <div className={styles.navbarContent}>
               <p>Chuyện chúng mình</p>
             </div>

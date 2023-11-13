@@ -6,11 +6,13 @@
   position: fixed;
   display: flex;
   align-items: center;
+  z-index: 1;
 }
 
 .navbarContent {
   padding: 10px 20px;
   font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .main {
@@ -27,8 +29,36 @@
   text-align: center;
 }
 
+.textStyle2 {
+  color: #532E18;
+  text-shadow: -3px 2px 0px #E19E00;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.textStyle3 {
+  color: #3D461C;
+  text-shadow: -3px 2px 0px #E19E00;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.textStyle4 {
+  color: #E19E00;
+  text-shadow: -4px 2px 0px #3D461C;
+  font-size: 50px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .rsvp {
   position: absolute;
+  z-index: 2;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
