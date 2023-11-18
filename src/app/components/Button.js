@@ -9,8 +9,8 @@ const dalatFont = localFont({ src: '../fonts/MTDalatSans.otf'})
 const dalatCapFont = localFont({ src: '../fonts/MTDalatSansCapRegular-Ver1.1.otf'})
 
 export default function Button(props) {
-    const [isLoading, setIsLoading] = useState(false);
-    
+    const [isLoading, setIsLoading] = useState(false);    
+
     // console.log(styles);
     function handleClick() {
         if (isLoading) {
@@ -28,15 +28,17 @@ export default function Button(props) {
             style={{"backgroundColor": props.bgColor, "color": props.color,
                     fontSize: props.fontSize, cursor: "pointer",
                     "display": "flex", "justifyContent": "center", alignItems: "center", 
-                    "width": "180px", "height": "50px", borderRadius: "7px"}}
+                    "width": props.width, "height": props.height, borderRadius: "min(1.5vh, 1vw)"}}
             onClick={handleClick}
         >
             {
                 isLoading  ?
                 <div><span className={styles.loader}></span></div>:
                 <>
-                    {props.content}
-                    {props.iconSrc && <Image alt="icon" style={{"marginLeft": "5px"}} src={props.iconSrc} />}
+                    <p style={{marginTop: props.font == "dalat" ? 0 : "min(1vh, 0.5vw)"}}>
+                        {props.content}
+                        {props.iconSrc && <Image alt="icon" style={{"marginLeft": "5px"}} src={props.iconSrc} />}
+                    </p>
                 </>
             }
                 

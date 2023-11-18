@@ -1,12 +1,15 @@
 "use client";
 
-import Image from 'next/image'
 import styles from './page.module.css'
 import localFont from 'next/font/local'
-
-import { useState } from 'react';
+import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
+import { useState, useEffect } from 'react';
+import Link from "next/link";
 import RSVP from './components/RSVP';
 import NavBar from './components/NavBar';
+import Interview from "./components/Interview";
+import OurStory from './components/OurStory';
+import Photos from './components/Photos';
 
 const font1 = localFont({ src: './fonts/font-doc-lap.otf'});
 const font2 = localFont({ src: './fonts/iCielBCDowntown-Regular.otf'});
@@ -20,91 +23,136 @@ const font8 = localFont({ src: './fonts/MTDalatSans.otf'});
 export default function Home() {
   const [mode, setMode] = useState(0);
   const [rsvpOpacity, setRsvpOpacity] = useState(1);
-  
+  const [_isMobile, setIsMobile] = useState(false);
+
   function cancelRSVP() {
     setRsvpOpacity(0.0)
+    window.scrollTo(0, 0);
     setTimeout(() => {
       setMode(1);
     }, 800);    
   }
 
+  useEffect(() => {
+    console.log("is mobile?", isMobile);
+    setIsMobile(isMobile);
+    // if (isMobile) {
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    // }
+  })
   // const _myWeddingID = localStorage.getItem("myWeddingID");
   // alert(_myWeddingID);
   // if (_myWeddingID === null) {
   //   alert("generating ID ...");
   //   localStorage.setItem("myWeddingID", 'klajsdklfjalsdf')
   // }
-        
+  
 
   return (
-    <div>
-      <div className={styles.main}>
+    <div>      
+      <div id="main" className={styles.main}>
         <NavBar mode={mode}/>
-        <img 
-          alt="backgroundImage"
-          src='/IMG_1697379292464.jpg'
-          style={{"width": "100%"}}        
-        />
+        {
+          (!_isMobile || mode == 1) ? 
+          <img 
+            alt="backgroundImage"
+            src={'/4890E3A0-0DEB-4D09-8FE6-F9B0EFD71A80_1_105_c 1.png'}
+            style={{width: "100%"}}
+          /> :
+          <img 
+            alt="backgroundImage"
+            src={"/Rectangle 34.png"}
+            style={{width: "100%", objectFit: "cover", height: "100vh"}}
+          />
+        }
+        
       {mode == 0 ?
-        <div style={{opacity: rsvpOpacity, transition: "opacity 1s"}}>
-          <RSVP onCancelRSVP={cancelRSVP}/>  
+        <div id="rsvp" style={{opacity: rsvpOpacity, transition: "opacity 1s"}}>          
+            <RSVP onCancelRSVP={cancelRSVP}/>                      
         </div>
         : 
         <div>
           <div style={{opacity: 1 - rsvpOpacity, transition: "opacity 2s"}}>        
-            <div style={{position: "absolute", top: 100, left: 115}}>
-              <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>ĐÁM CƯỚI</p>
-              <p style={{fontSize: 58, color: "#E29F00"}} className={font5.className}>HÀ THÀNH</p>
+            <div style={{position: "absolute", top: "min(10vw, 100px)", left: "5%"}}>
+              <p style={{fontSize: "min(6.5vh, 3.5vw)", color: "#E29F00"}} className={font5.className}>Đám cưới</p>
+              <p style={{fontSize: "min(6.5vh, 3.5vw)", color: "#E29F00"}} className={font5.className}>Hà Thành</p>
             </div>
 
-            <div style={{position: "absolute", bottom: 35, left: 115}}>
+            <div style={{position: "absolute", top: "40vw", left: "5%"}}>
               <div>
-                <span style={{fontSize: 24, color: "#F6EAD1", marginRight: 16}} className={font8.className}>[Boston]</span>
-                <span style={{fontSize: 60, color: "#A21F17"}} className={font7.className}>Lời Tình</span>
+                <span style={{fontSize: "min(3.5vh, 2.5vw)", color: "#F6EAD1", marginRight: "2vw"}} className={font8.className}>[Boston]</span>
+                <span style={{fontSize: "min(8vh, 5.5vw)", color: "#A21F17"}} className={font7.className}>LỜi Tình</span>
               </div>
-              <p style={{fontSize: 30, color: "#F6EAD1"}} className={font8.className}>của Ánh Bằng - Thanh Lan</p>
+              <p style={{fontSize: "min(3.5vh, 2.5vw)", color: "#F6EAD1"}} className={font8.className}>của Ánh Bằng - Thanh Lan</p>
             </div>            
 
-            <div style={{position: "absolute", textAlign: "right", top: 120, right: 100}}>
-              <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Khúc Ca</p>
-              <p style={{fontSize: 65, color: "#532E18", textShadow: "-3px 2px 0px #E19E00"}} className={font3.className}>Tình Sâu</p>
-              <p style={{fontSize: 24, color: "#F6EAD1"}} className={font6.className}>Hà Thanh</p>
+            <div style={{position: "absolute", textAlign: "right", top: "min(12vw, 100px)", right: "5%"}}>
+              <p style={{fontSize: "min(8vh, 4vw)"}} className={font3.className + " " + styles.textStyle2}>Khúc Ca</p>
+              <p style={{fontSize: "min(8vh, 4vw)"}} className={font3.className + " " + styles.textStyle2}>Tình Sâu</p>
+              <p style={{fontSize: "min(3vh, 1.8vw)", color: "#F6EAD1"}} className={font6.className}>Hà Thanh</p>
             </div>
 
-            <div style={{position: "absolute", textAlign: "right", bottom: 10, right: 100}}>
-              <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>Đêm nhớ</p>
-              <p style={{fontSize: 65, color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>ngày mong</p>
-              <p style={{fontSize: 35, color: "#FFE8D2"}} className={font1.className}>Thanh Tuyền</p>
+            <div style={{position: "absolute", textAlign: "right", top: "40vw", right: "5%"}}>
+              <p style={{fontSize: "min(8vh, 5vw)", color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>ĐÊM NhỚ</p>
+              <p style={{fontSize: "min(8vh, 5vw)", color: "#3D461C", textShadow: "-3px 2px 0px #E19E00"}} className={font1.className}>NGÀY MONG</p>
+              <p style={{fontSize: "min(3.5vh, 2.5vw)", color: "#FFE8D2"}} className={font1.className}>THANH TUYỀN</p>
             </div>
           </div>
 
-          <div style={{height: 1200, backgroundColor: "#F6E9D1", position: "relative", marginTop: -10}}>
-            <div style={{position: "absolute", top: -120, left: 115}}>
-              <p style={{fontSize: 40, color: "#F6EAD1"}} className={font4.className}>Thanh xuân của chúng ta</p>
-              <p style={{fontSize: 30, marginTop: 8, color: "#E29F00"}} className={font2.className}>Bùi Anh Tuấn và Bảo Anh</p>
+          <div style={{height: "88vw", backgroundColor: "#F6E9D1", position: "relative", marginTop: "-1vw"}}>
+            <div style={{position: "absolute", top: "-12vw", left: "5%"}}>
+              <p style={{fontSize: "min(5vh, 3.5vw)", color: "#F6EAD1"}} className={font4.className}>Thanh xuân của chúng ta</p>
+              <p style={{fontSize: "min(3.5vh, 2.5vw)", marginTop: "1vw", color: "#E29F00"}} className={font2.className}>Bùi Anh Tuấn và Bảo Anh</p>
             </div>
-            <img src="/image 1.png" style={{width: 250, height: 250, position: "absolute", left: 0, top: 0}}/>
-            <img src="/image 5.png" style={{width: 250, position: "absolute", left: 0, top: 250}}/>
-            <img src="/image 2.png" style={{width: 250, height: 250, position: "absolute", right: 0, top: 0}}/>
-            <img src="/image 6.png" style={{width: 250, position: "absolute", right: 0, top: 250}}/>
+            <img src="/image 1.png" style={{opacity: _isMobile ? 0.5 : 1, width: "20vw", height: "20vw", position: "absolute", left: 0, top: 0}}/>
+            <img src="/image 5.png" style={{opacity: _isMobile ? 0.5 : 1, zIndex: 2, width: "20vw", position: "absolute", left: 0, top: "20vw"}}/>
+            <img src="/image 2.png" style={{opacity: _isMobile ? 0.5 : 1, width: "20vw", height: "20vw", position: "absolute", right: 0, top: 0}}/>
+            <img src="/image 6.png" style={{opacity: _isMobile ? 0.5 : 1, zIndex: 2, width: "20vw", position: "absolute", right: 0, top: "20vw"}}/>
 
-            <p className={styles.textStyle2 + " " + font7.className} style={{textAlign: "center", paddingTop: 20}}>Với sự tham gia của</p>
+            <p className={styles.textStyle2 + " " + font7.className} style={{textAlign: "center", paddingTop: "2vw", fontSize: "min(7vh, 5vw)"}}>VỚi SỰ THAM GiA CỦA</p>
 
-            <div style={{margin: "40px auto", width: "60vw", position: "relative"}}>              
-              <div style={{backgroundColor: "#3D461C", borderRadius: 20, position: "absolute", top: "50%", 
-                          transform: "translateY(-50%)", left: "25%", height: "75%", width: "75%"}}>
-                <div className={font7.className} style={{position: "absolute", left: "10%", top: -60}}>
-                  <span className={styles.textStyle3} style={{marginRight: 10}}>Cô dâu</span>
-                  <span className={styles.textStyle1} style={{fontSize: 40}}>Nguyễn Thu Hạnh</span>
-                </div>
+            <Interview mode={0} image="./Ellipse 4.png" 
+              content1="CÔ DÂU" 
+              content2="NGUYỄN THU HẠNH"
+              content3="EM CHƯA MUỐN LẤY CHỒNG"
+              content4="Đùa thôi, chồng mình chăm đưa mình đi chơi, đi khám phá, điều đó làm mình rất hạnh phúc. Phải nhanh chống hoàn thành KPI 2 đứa để còn đi tiếp hahaha."
+            />
+            <div className={styles.abc} ></div>
+            <Interview mode={1} image="./Ellipse 5.png" 
+              content1="CHÚ RỂ" 
+              content2="NGUYỄN TÀI LONG"
+              content3="MÌNH SỤT 1KG VÌ CÁI WEB NÀY"
+              content4="Nhưng mà vui, việc chuẩn bị cho đám cưới là một trải nghiệm thú vị. Từ thiết kế, lên ý tưởng, tự tay làm những món đồ trang trí đối với mình là một việc thật ngầu và ý nghĩa."
+            />            
+          </div>
+          
+          <div id="our-story">
+            <OurStory />
+          </div>
+          <div id="wedding-photo" style={{position: "relative"}}>
+            <Photos 
+              bgImage="./Rectangle 34.png"
+              image="./Rectangle 32.png"
+              link="https://drive.google.com/drive/folders/16yvJX2PvUBzHUz-GPArj3OcdKK0KcLcR"
+              content1="LADAKH"
+              content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
+              mode={_isMobile ? "center": "left"}
+            />
 
-                <div style={{position: "absolute", left: "25%", top: "20%"}}>
-                  <p  className={font6.className}  style={{fontSize: "2.5vh"}}>Em vẫn chưa muốn láy chồng ahuhu</p>
-                  <br></br>
-                  <p  className={font8.className} style={{fontSize: "2.77vh", paddingRight: 20}}>Đùa thôi, chồng mình chăm đưa mình đi chơi, đi khám phá, phải nhanh chống hoàn thành KPI 2 đứa để còn đi tiếp hahaha.</p>
-                </div>
-              </div>
-              <img style={{position: "relative", width: "40%"}} src="/Ellipse 4.png" />
+            <Photos 
+              bgImage="./Rectangle 35.png"
+              image="./Rectangle 33.png"
+              link="https://drive.google.com/drive/folders/16yvJX2PvUBzHUz-GPArj3OcdKK0KcLcR"
+              content1="HÀ NỘI"
+              content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
+              mode={_isMobile ? "center": "right"}
+            />
+
+            <div style={{width: "30vw", position: "absolute", right: 0, zIndex: 3, top: "-5vw"}}>
+              <img src="./image 7.png" style={{width: "100%"}}></img>
             </div>
           </div>
         </div>
