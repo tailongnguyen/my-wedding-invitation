@@ -158,7 +158,7 @@ export default function Home() {
             <Photos 
               bgImage="./Rectangle 34.png"
               image="./Rectangle 32.png"
-              link="https://drive.google.com/drive/folders/16yvJX2PvUBzHUz-GPArj3OcdKK0KcLcR"
+              link="https://drive.google.com/file/d/15KlvWkE0jQgthiiINe1q6fiPzjfln0ER/view?usp=drive_link"
               content1="LADAKH"
               content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
               mode={_isMobile ? "center": "left"}
@@ -167,7 +167,7 @@ export default function Home() {
             <Photos 
               bgImage="./Rectangle 35.png"
               image="./Rectangle 33.png"
-              link="https://drive.google.com/drive/folders/16yvJX2PvUBzHUz-GPArj3OcdKK0KcLcR"
+              link="https://drive.google.com/file/d/15KlvWkE0jQgthiiINe1q6fiPzjfln0ER/view?usp=drive_link"
               content1="HÀ NỘI"
               content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
               mode={_isMobile ? "center": "right"}
