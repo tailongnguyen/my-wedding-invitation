@@ -3,13 +3,15 @@
 import styles from './page.module.css'
 import localFont from 'next/font/local'
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from "next/link";
 import RSVP from './components/RSVP';
 import NavBar from './components/NavBar';
 import Interview from "./components/Interview";
 import OurStory from './components/OurStory';
 import Photos from './components/Photos';
+import Music from './components/Music';
+import Map from './components/Map';
 
 const font1 = localFont({ src: './fonts/font-doc-lap.otf'});
 const font2 = localFont({ src: './fonts/iCielBCDowntown-Regular.otf'});
@@ -24,6 +26,8 @@ export default function Home() {
   const [mode, setMode] = useState(0);
   const [rsvpOpacity, setRsvpOpacity] = useState(1);
   const [_isMobile, setIsMobile] = useState(false);
+  const [bigPhoto, setBigPhoto] = useState(null);
+  const [isComeBack, setIsComeBack] = useState(null);
 
   function cancelRSVP() {
     setRsvpOpacity(0.0)
@@ -43,6 +47,15 @@ export default function Home() {
     //   });
     // }
   })
+
+  function showBigPhoto(imagePath) {
+    setBigPhoto(imagePath);
+  }
+
+  function hideBigPhoto() {
+    setIsComeBack(bigPhoto);
+    setBigPhoto(null);
+  }
   // const _myWeddingID = localStorage.getItem("myWeddingID");
   // alert(_myWeddingID);
   // if (_myWeddingID === null) {
@@ -54,28 +67,37 @@ export default function Home() {
   return (
     <div>      
       <div id="main" className={styles.main}>
-        <NavBar mode={mode}/>
+        { bigPhoto == null &&
+          <NavBar isComeBack={isComeBack} mode={mode}/>
+        }
         {
-          (!_isMobile || mode == 1) ? 
+          (bigPhoto == null  && (!_isMobile || mode == 1)) ? 
           <img 
             alt="backgroundImage"
             src={'/4890E3A0-0DEB-4D09-8FE6-F9B0EFD71A80_1_105_c 1.png'}
             style={{width: "100%"}}
-          /> :
+          /> : bigPhoto == null ?
           <img 
             alt="backgroundImage"
             src={"/Rectangle 34.png"}
             style={{width: "100%", objectFit: "cover", height: "100vh"}}
           />
+          : <></>
         }
         
       {mode == 0 ?
         <div id="rsvp" style={{opacity: rsvpOpacity, transition: "opacity 1s"}}>          
             <RSVP onCancelRSVP={cancelRSVP}/>                      
         </div>
-        : 
-        <div>
-          <div style={{opacity: 1 - rsvpOpacity, transition: "opacity 2s"}}>        
+        : bigPhoto != null ? 
+        <div style={{backgroundColor: "#e9e9e96b", height: "100vh", width: "100vw", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", position: "fixed"}}>
+          <p className={font6.className} style={{fontSize: "min(4vh, 4vw)", textAlign: "center", color:"#E29F00", position: "absolute", top: "5vh", left: "50%", transform: "translateX(-50%)"}}>
+            Bấm vào ảnh để quay lại</p>            
+          <img src={bigPhoto} onClick={hideBigPhoto}  style={{maxWidth: "80vw", maxHeight: "80vh", cursor: "pointer", border: "min(1vh, 0.8vw) solid #F6EAD1"}}></img>
+        </div> 
+        :
+        <div>          
+          <div style={{opacity: 1 - rsvpOpacity, transition: "opacity 2s"}}>            
             <div style={{position: "absolute", top: "min(10vw, 100px)", left: "5%"}}>
               <p style={{fontSize: "min(6.5vh, 3.5vw)", color: "#E29F00"}} className={font5.className}>Đám cưới</p>
               <p style={{fontSize: "min(6.5vh, 3.5vw)", color: "#E29F00"}} className={font5.className}>Hà Thành</p>
@@ -130,9 +152,9 @@ export default function Home() {
           </div>
           
           <div id="our-story">
-            <OurStory />
+            <OurStory activePhoto={isComeBack} onPhotoClick={showBigPhoto} />
           </div>
-          <div id="wedding-photo" style={{position: "relative"}}>
+          <div id="wedding-photo" style={{position: "relative", height: _isMobile ? "auto" : "53vw"}}>
             <Photos 
               bgImage="./Rectangle 34.png"
               image="./Rectangle 32.png"
@@ -154,6 +176,14 @@ export default function Home() {
             <div style={{width: "30vw", position: "absolute", right: 0, zIndex: 3, top: "-5vw"}}>
               <img src="./image 7.png" style={{width: "100%"}}></img>
             </div>
+          </div>
+
+          <div id="music" style={{height: _isMobile ? "120vw" : "60vw"}}>
+            <Music mode={_isMobile ? 1 : 0} />
+          </div>
+
+          <div id="map"  style={{height: _isMobile ? "120vw" : "100vw"}}>
+            <Map />
           </div>
         </div>
       }

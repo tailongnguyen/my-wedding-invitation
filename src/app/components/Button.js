@@ -36,9 +36,9 @@ export default function Button(props) {
                 <div><span className={styles.loader}></span></div>:
                 <>
                     <p style={{marginTop: props.font == "dalat" ? 0 : "min(1vh, 0.5vw)"}}>
-                        {props.content}
-                        {props.iconSrc && <Image alt="icon" style={{"marginLeft": "5px"}} src={props.iconSrc} />}
+                        {props.content}                        
                     </p>
+                    {props.iconSrc && <img alt="icon" style={{"marginLeft": "1vw", maxHeight: "50%"}} src={props.iconSrc} />}
                 </>
             }
                 

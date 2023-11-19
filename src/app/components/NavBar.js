@@ -10,15 +10,22 @@ const dalatFont = localFont({ src: '../fonts/MTDalatSans.otf'})
 export default function NavBar(props) {
     const [isScrolled, setIsScrolled] = useState(false);
     const navBarRef = useRef(null);
+    const storyRef = useRef(null);
 
     useEffect(() => {
+      if (props.isComeBack != null) {
+        storyRef.current.click();
+        setIsScrolled(true);
+      }
+      else {
         window.addEventListener('scroll', () => {
-          if (window.scrollY > 10 && navBarRef.current.style.display != "none") {            
+          if (window.scrollY > 10 && navBarRef.current && navBarRef.current.style.display != "none") {            
             setIsScrolled(true);
           } else {
             setIsScrolled(false);
           }
         })
+      }
     }, []);
 
     return (
@@ -28,13 +35,13 @@ export default function NavBar(props) {
         >
           <div ref={navBarRef} style={{display: props.mode == 0 ? "none" : "flex", justifyContent: "space-between", margin: "0 auto", width: "100%", maxWidth: "90vh"}}>
             <div className={styles.navbarContent}>
-              <Link href="#our-story"><p>Chuyện chúng mình</p></Link>
+              <Link ref={storyRef} href="#our-story"><p>Chuyện chúng mình</p></Link>
             </div>
             <div className={styles.navbarContent}>
               <Link href="#wedding-photo"><p>Ảnh cưới</p></Link>
             </div>
             <div className={styles.navbarContent}>
-              <Link href="#song-vote"><p>Bài hát</p></Link>
+              <Link href="#music"><p>Bài hát</p></Link>
             </div>
             <div className={styles.navbarContent}>
               <Link href="#map"><p>Chỉ đường</p></Link>

@@ -153,8 +153,8 @@ export default function RSVP(props) {
                     )
                 }
 
-                <img style={{position: "absolute", bottom: 0, left: 0, borderRadius: "0 0 0 30px", width: "min(12vh, 15vw)", height: "min(12vh, 15vw)"}} alt="rsvpImage1" src="/rsvpImg1.png"/>
-                <img style={{position: "absolute", bottom: 0, right: 0, borderRadius: "0 0 30px 0", width: "min(12vh, 15vw)", height: "min(12vh, 15vw)"}} alt="rsvpImage1" src="/rsvpImg.png"/>
+                <img style={{position: "absolute", bottom: 0, left: 0, borderRadius: "0 0 min(4vh, 5vw) min(4vh, 5vw)", width: "min(12vh, 15vw)", height: "min(12vh, 15vw)"}} alt="rsvpImage1" src="/rsvpImg1.png"/>
+                <img style={{position: "absolute", bottom: 0, right: 0, borderRadius: "0 0 min(4vh, 5vw) 0", width: "min(12vh, 15vw)", height: "min(12vh, 15vw)"}} alt="rsvpImage1" src="/rsvpImg.png"/>
             </div>
         </div>
     )

@@ -63,7 +63,7 @@
   min-width: 35vw;
   transform: translateX(-50%) translateY(-50%);
   width: min(500px, 90vw);
-  border-radius: 30px;
+  border-radius: min(4vh, 5vw) min(4vh, 5vw);
   background-color: #F6EAD1;
 }
 
