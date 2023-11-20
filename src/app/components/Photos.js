@@ -5,6 +5,7 @@ import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detec
 import styles from '../page.module.css';
 import localFont from 'next/font/local'
 import Button from './Button';
+import Link from 'next/link';
 
 const font5 = localFont({ src: '../fonts/UTM-Guanine.ttf'});
 const font8 = localFont({ src: '../fonts/MTDalatSans.otf'});
@@ -12,6 +13,7 @@ const font8 = localFont({ src: '../fonts/MTDalatSans.otf'});
 export default function Photos(props) {
 
     const linkRef = useRef(null);
+    const linkRef1 = useRef(null);
     const [isHovering, setIsHovering] = useState(false);
 
     // useEffect(() => {
@@ -27,14 +29,15 @@ export default function Photos(props) {
     function onMouseLeave() {
         setIsHovering(false);
     }
-    
+        
     return (
         
             
             <div className={props.mode == "left" ? styles.photoLeft : props.mode == "right" ? styles.photoRight : styles.photoCenter}>
+                <Link ref={linkRef1} style={{display: "none"}} href="https://www.facebook.com/ChupanhcotamCotam" target={"_blank"} />
               <img src={props.bgImage} style={{width: "100%"}}></img>
               <div style={{position: "absolute", left: "50%", top: "50%", transform: "translateX(-50%) translateY(-50%)"}}>
-                <img src='./text1.png' style={{opacity: (props.mode == "left" || props.mode == "center") ? 1 : 0, maxWidth: props.mode != "center" ? "15vw" : "20vw"}}></img>
+                <img src='./text1.png' onClick={() => {linkRef1.current.click()}} style={{cursor: "pointer", opacity: (props.mode == "left" || props.mode == "center") ? 1 : 0, maxWidth: props.mode != "center" ? "30vw" : "50vw"}}></img>
                 <div style={{position: "relative"}} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                   <img src={props.image} style={{marginTop: "min(5vh, 1.5vw)", opacity: isHovering ? 0.5 : 1, width: props.mode != "center" ? "40vw" : "80vw"}}></img>
                   <div style={{position: "absolute", left: "50%", top: "50%", display: isHovering ? "block" : "none", transform: "translateX(-50%) translateY(-50%)"}}>

@@ -4,7 +4,6 @@ import styles from './page.module.css'
 import localFont from 'next/font/local'
 import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 import { useState, useEffect, useRef } from 'react';
-import Link from "next/link";
 import RSVP from './components/RSVP';
 import NavBar from './components/NavBar';
 import Interview from "./components/Interview";
@@ -71,7 +70,7 @@ export default function Home() {
   }  
 
   return (
-    <div>      
+    <div>
       <div id="main" className={styles.main}>
         { bigPhoto == null &&
           <NavBar isComeBack={isComeBack} mode={mode}/>
@@ -80,7 +79,7 @@ export default function Home() {
           (bigPhoto == null  && (!_isMobile || mode == 1)) ? 
           <img 
             alt="backgroundImage"
-            src={'/4890E3A0-0DEB-4D09-8FE6-F9B0EFD71A80_1_105_c 1.png'}
+            src={side != "hanh" ? '/4890E3A0-0DEB-4D09-8FE6-F9B0EFD71A80_1_105_c 1.png' : '1O5A5902.jpg'}
             style={{width: "100%"}}
           /> : bigPhoto == null ?
           <img 
