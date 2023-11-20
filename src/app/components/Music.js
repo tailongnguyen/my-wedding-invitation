@@ -24,6 +24,7 @@ export default function Music(props) {
 
     async function searchTrack(track) {
         setIsSearching(true);
+        setSubmitStatus(null);
         setTrack(null);
         setFoundTracks(null);
         const url = 'https://spotify23.p.rapidapi.com/search/?q=' + track +  '&type=tracks&offset=0&limit=10&numberOfTopResults=5';
