@@ -24,10 +24,10 @@ export default function Map(props) {
             <img src="image 10.png" style={{position: "absolute", top: "-12vw", width: "24vw", right: 0}}></img>
             
             <div style={{paddingTop: "min(4vh, 5vw)", marginLeft: "5vw"}}>
-                <img style={{maxWidth: "30vw"}} src={"text2.png"} />
-                <p className={dalatFont.className} style={{fontSize: "min(4vh, 4vw)", marginTop: "2vw", marginBottom: "2vw", maxWidth: "70vw", color: "#F6EAD1"}}>Địa chỉ: Nhà văn hóa cụm 6, ngõ 109,  thôn Phan Long, xã Tân Hội, huyện Đan Phượng, thành phố Hà Nội</p>
+                <img style={{maxWidth: "40vw"}} src={"text2.png"} />
+                <p className={dalatFont.className} style={{fontSize: "min(4vh, 4vw)", marginTop: "2vw", marginBottom: "2vw", maxWidth: "70vw", color: "#F6EAD1"}}>Địa chỉ: {props.side != "hanh" ? "Nhà văn hóa cụm 6, ngõ 109,  thôn Phan Long, xã Tân Hội, huyện Đan Phượng, thành phố Hà Nội. SĐT Long: 0352794397." : "Trung tâm tiệc cưới Trống Đồng Palace, số 65 Quán Sứ, Hoàn Kiếm, Hà Nội. SĐT Hạnh: 0823234576."}</p>
 
-                <Link ref={linkRef} style={{display: "none"}} href="https://maps.app.goo.gl/YX22xdme2y88yaGh9" target={"_blank"} ></Link>
+                <Link ref={linkRef} style={{display: "none"}} href={props.side != "hanh" ? "https://maps.app.goo.gl/YX22xdme2y88yaGh9" : "https://maps.app.goo.gl/GyqGNMMi1idqF5Az8"} target={"_blank"} ></Link>
                 <Button 
                     font="dalatcap"
                     fontSize={"min(3vh, 3vw)"}
@@ -40,7 +40,7 @@ export default function Map(props) {
                     iconSrc="map.png"
                 />
 
-                <img src="Group 28.png" style={{marginTop: "4vw", maxWidth: "90vw", width: "90%"}}></img>
+                <img src={props.side != "hanh" ? "Group 28.png" : "Group 29.png"} style={{marginTop: "4vw", maxWidth: "90vw", width: "80%"}}></img>
                 <img src="image 12.png" style={{position: "absolute", bottom: 0, width: "100vw", left: 0}}></img>
             </div>
         </div>

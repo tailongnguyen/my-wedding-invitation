@@ -24,6 +24,7 @@ const font8 = localFont({ src: './fonts/MTDalatSans.otf'});
 
 export default function Home() {
   const [mode, setMode] = useState(0);
+  const [side, setSide] = useState(null);
   const [rsvpOpacity, setRsvpOpacity] = useState(1);
   const [_isMobile, setIsMobile] = useState(false);
   const [bigPhoto, setBigPhoto] = useState(null);
@@ -37,9 +38,21 @@ export default function Home() {
     }, 800);    
   }
 
+
   useEffect(() => {
     console.log("is mobile?", isMobile);
+    const urlParams = new URLSearchParams(window.location.search);
+    setSide(urlParams.get("side"));
     setIsMobile(isMobile);
+
+    const _myWeddingID = localStorage.getItem("myWeddingID");
+    console.log("weddingID", _myWeddingID);
+    // alert(_myWeddingID);
+    if (_myWeddingID !== null) {
+      setRsvpOpacity(0.0);
+      setMode(1);      
+    }
+    
     // if (isMobile) {
     //   window.scrollTo({
     //     top: 0,
@@ -55,14 +68,7 @@ export default function Home() {
   function hideBigPhoto() {
     setIsComeBack(bigPhoto);
     setBigPhoto(null);
-  }
-  // const _myWeddingID = localStorage.getItem("myWeddingID");
-  // alert(_myWeddingID);
-  // if (_myWeddingID === null) {
-  //   alert("generating ID ...");
-  //   localStorage.setItem("myWeddingID", 'klajsdklfjalsdf')
-  // }
-  
+  }  
 
   return (
     <div>      
@@ -87,7 +93,7 @@ export default function Home() {
         
       {mode == 0 ?
         <div id="rsvp" style={{opacity: rsvpOpacity, transition: "opacity 1s"}}>          
-            <RSVP onCancelRSVP={cancelRSVP}/>                      
+            <RSVP side={side} onCancelRSVP={cancelRSVP}/>                      
         </div>
         : bigPhoto != null ? 
         <div style={{backgroundColor: "#e9e9e96b", height: "100vh", width: "100vw", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", position: "fixed"}}>
@@ -158,7 +164,7 @@ export default function Home() {
             <Photos 
               bgImage="./Rectangle 34.png"
               image="./Rectangle 32.png"
-              link="https://drive.google.com/file/d/15KlvWkE0jQgthiiINe1q6fiPzjfln0ER/view?usp=drive_link"
+              link="https://drive.google.com/drive/folders/1GAp2LVLFfAfkpf3ezrCBQvEDKUapPMEm"
               content1="LADAKH"
               content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
               mode={_isMobile ? "center": "left"}
@@ -167,7 +173,7 @@ export default function Home() {
             <Photos 
               bgImage="./Rectangle 35.png"
               image="./Rectangle 33.png"
-              link="https://drive.google.com/file/d/15KlvWkE0jQgthiiINe1q6fiPzjfln0ER/view?usp=drive_link"
+              link="https://drive.google.com/drive/folders/1GAp2LVLFfAfkpf3ezrCBQvEDKUapPMEm"
               content1="HÀ NỘI"
               content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
               mode={_isMobile ? "center": "right"}
@@ -183,7 +189,7 @@ export default function Home() {
           </div>
 
           <div id="map"  style={{height: _isMobile ? "120vw" : "100vw"}}>
-            <Map />
+            <Map side={side} />
           </div>
         </div>
       }

@@ -1,11 +1,9 @@
 "use client";
 
 import { useState } from 'react';
-import Image from 'next/image';
 import styles from '../page.module.css';
 import localFont from 'next/font/local'
 import Button from './Button';
-import { BrowserView, MobileView, isBrowser, isMobile } from 'react-device-detect';
 
 const svnhcFont = localFont({ src: '../fonts/SVN_HC_Elixir_Sans.otf'})
 const dalatFont = localFont({ src: '../fonts/MTDalatSans.otf'})
@@ -26,11 +24,44 @@ export default function RSVP(props) {
         }, 500);
     }
 
-    function sendResponse(callback) {
+    function makeid(length) {
+        let result = '';
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        const charactersLength = characters.length;
+        let counter = 0;
+        while (counter < length) {
+          result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          counter += 1;
+        }
+        return result;
+    }
+
+    async function sendResponse(callback) {
         console.log("sending response ...");
+        try {
+            const response = await fetch("https://ekyc-dev-internal.kalapa.vn/lw/rsvp?user_name=" + name + "&quantity=" + quantity, {
+                method: "POST"                
+            });
+            if (response.status != 200) {
+                alert("Something went wrong. Please try again later.");
+                callback();
+            }
+            else {
+                let data = await response.json();
+                console.log(data);
+                let newID = makeid(32);
+                console.log("generating wedding ID ...", newID);
+                localStorage.setItem("myWeddingID", newID);
+                
+                callback();
+                setTimeout(props.onCancelRSVP, 200);
+            }            
+        }
+        catch (error) {
+            alert("Something went wrong. Please try again later.");
+            callback();
+        }
         
-        setTimeout(callback, 2000);
-        setTimeout(props.onCancelRSVP, 3000);
     }
 
     function updateIsMoreThanOne(mode) {
@@ -76,12 +107,12 @@ export default function RSVP(props) {
                         <div style={{margin: "0px 20px", position: "relative", height: "min(30vh, 50vw)", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                             <div className={styles.bgCircle}></div>
                             <p style={{"fontSize": "min(3vh, 5vw)"}}>vào hồi</p>
-                            <p style={{"fontSize": "min(11vh, 20vw)"}}>10:30</p>
-                            <p style={{"fontSize": "min(6vh, 8vw)"}}>thứ 7 ngày 02 tháng 12</p>
+                            <p style={{"fontSize": "min(11vh, 20vw)"}}>{props.side != "hanh" ? "10:30" : "17:30"}</p>
+                            <p style={{"fontSize": "min(6vh, 8vw)"}}>{props.side != "hanh" ? "thứ 7 ngày 02 tháng 12" : "Chủ Nhật ngày 03/12"}</p>
                             <p style={{"fontSize": "min(3vh, 5vw)"}}>tại</p>
                         </div>
                         <br></br>
-                        <p style={{"fontSize": "min(3vh, 6vw)", padding: "0 20px"}}>nhà văn hóa cụm 6, thôn Phan Long, xã Tân Hội, huyện Đan Phượng, thành phố Hà Nội</p>
+                        <p style={{"fontSize": "min(3vh, 6vw)", padding: "0 20px"}}>{props.side != "hanh" ? "nhà văn hóa cụm 6, thôn Phan Long, xã Tân Hội, huyện Đan Phượng, thành phố Hà Nội" : "trung tâm tiệc cưới Trống Đồng Palace, số 65 Quán Sứ, Hoàn Kiếm, Hà Nội"}</p>
                         <br></br>
 
                         <div style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center"}}>

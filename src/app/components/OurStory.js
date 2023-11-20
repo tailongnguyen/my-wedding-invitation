@@ -61,19 +61,20 @@ export default function OurStory(props) {
     return (
         <div ref={boardRef} style={{height: "50vw", position: "relative", zIndex: 1, marginTop: "max(-5vh, -2vw)", backgroundColor: "#A21F17"}}>
             
-            <div style={{position: "absolute", width: "40vw", right: "10%", top: "8%"}}>
+            <div style={{position: "absolute", width: "45vw", right: "5vw", top: "8%"}}>
               <p className={styles.textStyle4 + " " + font7.className} style={{fontSize: "min(7vh, 5vw)"}}>CHUYỆN CHÚNG MÌNH</p>
               <p className={styles.textStyle3 + " " + font7.className} style={{fontSize: "min(6vh, 4.5vw)", marginTop: "min(2vh, 1vw)"}}>{contents[page][0]}</p>
-              <p className={dalatFont.className} style={{fontSize: "min(4vh, 2.8vw)", color: "#F6EAD1", marginTop: "min(1vh, 1vw)"}}>{contents[page][1]}</p>
+              <p className={dalatFont.className} style={{fontSize: "min(4vh, 3vw)", color: "#F6EAD1", marginTop: "min(1vh, 1vw)"}}>{contents[page][1]}</p>
             </div>
             <div style={{position: "absolute", left: "10vw", top: "50%", transform: "translateY(-50%)"}}>
                 <div style={{width: "min(7vh, 4vw)", height: "min(7vh, 4vw)", 
-                            borderRadius: "100%", position: "absolute", top: "20%", left: "max(-4.5vh, -2vw)",
+                            borderRadius: "100%", position: "absolute", top: "10%", left: "max(-4.5vh, -2vw)",
                             backgroundColor: "#E19E00"}} ></div>
                 <div style={{width: "min(7vh, 4vw)", height: "min(7vh, 4vw)", 
-                            borderRadius: "100%", position: "absolute", bottom: "20%", left: "max(-4.5vh, -2vw)",
+                            borderRadius: "100%", position: "absolute", bottom: "30%", left: "max(-4.5vh, -2vw)",
                             backgroundColor: "#3D461C"}} ></div>
-                <img onClick={onClickPhoto} ref={smallPhotoRef} src={images[page]} style={{maxWidth: "25vw", cursor: "pointer", maxHeight: "35vw", border: "min(1vh, 0.8vw) solid #F6EAD1"}}></img>                
+                <img onClick={onClickPhoto} ref={smallPhotoRef} src={images[page]} style={{maxWidth: "25vw", cursor: "pointer", maxHeight: "35vw", border: "min(1vh, 0.8vw) solid #F6EAD1"}}></img>
+                <p className={dalatFont.className} style={{textAlign: "center", marginTop: "1vw", color: "#F6EAD1", fontSize: "min(3vh, 2.5vw)"}}>Bấm vào ảnh để phóng to</p>
             </div>
             <div style={{display: "flex", flexDirection: "row", position: "absolute", bottom: "2vw", left: "50%", transform: "translateX(-50%)", justifyContent: "space-evenly", width: "40vw"}}>
                     <Dot onClick={() => {setPage(0)}} active={page == 0}/>

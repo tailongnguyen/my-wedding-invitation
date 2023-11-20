@@ -9,27 +9,142 @@ import Button from './Button';
 const dalatFont = localFont({ src: '../fonts/MTDalatSans.otf'})
 const dalatCapFont = localFont({ src: '../fonts/MTDalatSansCapRegular-Ver1.1.otf'})
 const font7 = localFont({ src: '../fonts/SVN_HC_Elixir_Sans.otf'});
+const domain = "https://ekyc-dev-internal.kalapa.vn/lw";
+// const domain = "http://localhost:16197";
+let timer;
 
 export default function Music(props) {
 
-    const [topTracks, setTopTracks] = useState([
-        ["Bạn đời | Karik x GDUCky", 21],
-        ["chuyện của mùa đông | hà anh tuấn", 19],
-        ["Một nhà | Dalab", 16],        
-        ["Hơn cả yêu | Đức phúc", 14],
-        ["Xứng đôi yêu thôi | lê thiện hiếu", 10],
-        ["perfect | ed sheeran", 8],
-        ["rồi tới luôn | Nal", 7],
-        ["đã xem | ngọt", 5],
-        ["Marry you | bruno mars", 5],
-        ["Until i found you | stephen sanchez", 3]
-    ])
+    const inputRef = useRef(null);
+    const [submitStatus, setSubmitStatus] = useState(null);
+    const [track, setTrack] = useState(null);
+    const [foundTracks, setFoundTracks] = useState(null);
+    const [isSearching, setIsSearching] = useState(false);
+    const [topTracks, setTopTracks] = useState([]);
+
+    async function searchTrack(track) {
+        setIsSearching(true);
+        setTrack(null);
+        setFoundTracks(null);
+        const url = 'https://spotify23.p.rapidapi.com/search/?q=' + track +  '&type=tracks&offset=0&limit=10&numberOfTopResults=5';
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '8465186f9fmsh0afdea2074a329ap15070fjsn2764fa09f307',
+                'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = await fetch(url, options);
+            const result = await response.json();
+            console.log(result);
+            let tracks = [];
+            result.tracks.items.map(x => {
+                try {
+                    tracks.push({
+                        _name: x.data?.name,
+                        _artist: x.data?.artists?.items.map(y => y.profile.name).join(" - ")
+                    })
+                }
+                catch (error) {
+                    console.log(error);
+                }
+            })
+            console.log(tracks);
+            setFoundTracks(tracks);
+            setIsSearching(false);
+        } catch (error) {
+            console.error(error);
+        }
+
+        // setTimeout(() => {
+        //     let result = _foundTracks;
+        //     let tracks = [];
+        //     result.tracks.items.map(x => {
+        //         try {
+        //             tracks.push({
+        //                 _name: x.data?.name,
+        //                 _artist: x.data?.artists?.items.map(y => y.profile.name).join(" - ")
+        //             })
+        //         }
+        //         catch (error) {
+        //             console.log(error);
+        //         }
+        //     })
+        //     console.log(tracks);
+        //     setFoundTracks(tracks);
+        //     setIsSearching(false);
+        // }, 1000)        
+        
+    }
+
+    async function getTopTracks() {
+        try {
+            const response = await fetch(domain + "/track", {
+                method: "GET"                
+            });
+            if (response.status != 200) {
+                alert("Something went wrong. Please try again later.");
+                callback();
+            }
+            else {
+                let data = await response.json();
+                let _topTracks = data.data.map(x => [x.track + " | " + x.artist, x.vote]);
+                console.log(_topTracks);
+                setTopTracks(_topTracks);                
+            }            
+        }
+        catch (error) {
+            alert("Something went wrong. Please try again later.");
+            callback();
+        }
+    }
+
     useEffect(() => {
-      
+        getTopTracks();
+        inputRef.current.addEventListener('keyup', event => {
+            clearTimeout(timer);
+          
+            timer = setTimeout(() => {
+              searchTrack(event.target.value);
+            }, 1000);
+        });
+        
     }, []);
 
-    function submitTrack() {
+    function chooseTrack(x) {
+        setTrack(x);
+        inputRef.current.value = x._name + " | " + x._artist;
+    }
 
+    async function submitTrack(callback) {
+        console.log("sending response ...");
+        try {
+            const response = await fetch(domain + "/track?track=" + track._name + "&artist=" + track._artist, {
+                method: "POST"                
+            });
+            if (response.status != 200) {
+                alert("Something went wrong. Please try again later.");
+                setSubmitStatus(false);
+                callback();
+            }
+            else {
+                let data = await response.json();
+                console.log(data);                
+                await getTopTracks();
+                setFoundTracks(null);
+                setTrack(null);
+                setSubmitStatus(true);
+                callback();
+                inputRef.current.value = "";
+            }            
+        }
+        catch (error) {
+            alert("Something went wrong. Please try again later.");
+            setSubmitStatus(false);
+            callback();
+        }
     }
 
     return (
@@ -42,54 +157,73 @@ export default function Music(props) {
               props.mode == 0 && <img src="disc.png" style={{position: "absolute", marginTop: "10vw", width: "50vw"}}></img>
           }
 
-          <div style={{position: "absolute", right: "5vw", maxWidth: props.mode == 1 ? "55vw" : "70vw", paddingTop: "1vw"}}>
+          <div style={{position: "absolute", right: "5vw", zIndex: 5, maxWidth: props.mode == 1 ? "55vw" : "70vw", paddingTop: "1vw"}}>
             <p className={font7.className + " " + styles.textStyle3} style={{fontSize: "min(6vh, 5vw)", maxWidth: props.mode == 0 ? "70vw" : "50vw"}}>
                 Bạn muốn nghe bài hát gì tại đám cưới?
             </p>
-            <div style={{marginTop: "2vw"}}>
-                <input type="text" className={styles.myInput + " " + dalatFont.className} placeholder="Điền tên bài hát bạn thích" style={{height: "min(7vh, 7vw)", marginBottom: "1vw", fontSize: "min(3vh, 2.8vw)",  float: "left", borderWidth: props.mode == 0 ? 2 : 1, borderRadius: "min(1.5vh, 1vw)", marginRight: "2vw", width: "min(40vh, 50vw)"}}/>                
-                <Button
-                    font="dalat"
-                    fontSize={"min(3.5vh, 3.5vw)"}
-                    bgColor="#3D461C"
-                    color="#F6EAD1"
-                    height="min(7vh, 7vw)"
-                    width="min(35vh, 35vw)"
-                    content="Đăng ký bài hát"
-                    handleClick={submitTrack}
-                    iconSrc="send.png"
-                />
+            <div style={{marginTop: "2vw", marginBottom: "3vw"}}>
+                <input ref={inputRef} type="text" className={styles.myInput + " " + dalatFont.className} placeholder="Điền tên bài hát bạn thích" style={{height: "min(7vh, 7vw)", marginBottom: "1vw", fontSize: "min(3vh, 2.8vw)",  float: "left", borderWidth: props.mode == 0 ? 2 : 1, borderRadius: "min(1.5vh, 1vw)", marginRight: "2vw", width: "min(40vh, 50vw)"}}/>                
+                {
+                    isSearching ? <div style={{paddingTop: "0.2vw"}} ><span className={styles.loader}></span></div> :
+                    <Button
+                        font="dalat"
+                        fontSize={"min(3.5vh, 3.5vw)"}
+                        bgColor="#3D461C"
+                        color="#F6EAD1"
+                        height="min(7vh, 7vw)"
+                        width="min(35vh, 35vw)"
+                        content="Đăng ký bài hát"
+                        handleClick={submitTrack}
+                        iconSrc="send.png"
+                        disabled={track === null}
+                    />
+                }
+                {
+                    submitStatus !== null && <p style={{fontSize: "min(3vh, 3vw)", marginTop: "1vw", color: submitStatus ? "green" : "red"}} >{submitStatus ? "Bạn vừa đăng ký thành công!" : "Có lỗi xảy ra. Vui lòng thử lại sau."}</p>
+                }
             </div>
             {
                 props.mode == 0 &&
                 <div style={{color: "#532E18", marginTop: "1vw"}}>
                     <p className={font7.className} style={{fontSize: "min(5vh, 5vw)", marginBottom: "2vw",}}>
-                        Top 10 bài đang được đăng ký nhiều nhất
+                        {foundTracks === null ? "Top 10 bài đang được đăng ký nhiều nhất" : "Kết quả tìm kiếm"}
                     </p>
-                    {
-                        topTracks.map((x, i) => 
-                        <div key={i} style={{marginTop: "0.5vw", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                            <span className={dalatCapFont.className} style={{fontSize: "min(3vh, 2.8vw)"}}>{i + 1}. {x[0]}</span>
-                            <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
-                        </div>)
+                    {   foundTracks === null ?
+                            topTracks.map((x, i) => 
+                            <div key={i} className={styles.track}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x[0]}</span>
+                                <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
+                            </div>)
+                        :
+                            foundTracks.map((x, i) => 
+                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track + " " + styles.clickableTrack}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x._name}</span>
+                                <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x._artist}</span>
+                            </div>)
                     }
                 </div>
-            }
+            }            
           </div>
-          {props.mode == 1 &&
+          { props.mode == 1 &&
             <div style={{position: "absolute", marginTop: "10vw", color: "#532E18", width: "90vw"}}>
                 <img src="disc.png" style={{width: "50vw"}}></img>
                 <div style={{marginLeft: "10vw"}}>
                     <p className={font7.className} style={{fontSize: "min(5vh, 5vw)", marginBottom: "2vw",}}>
-                        Top 10 bài đang được đăng ký nhiều nhất
+                        {foundTracks === null ? "Top 10 bài đang được đăng ký nhiều nhất" : "Kết quả tìm kiếm"}
                     </p>
 
-                    {
-                        topTracks.map((x, i) => 
-                        <div key={i} style={{marginTop: "0.5vw", display: "flex", justifyContent: "space-between", alignItems: "center"}}>
-                            <span className={dalatCapFont.className} style={{fontSize: "min(3vh, 2.8vw)"}}>{i + 1}. {x[0]}</span>
-                            <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
-                        </div>)
+                    {   foundTracks === null ?
+                            topTracks.map((x, i) => 
+                            <div key={i} className={styles.track}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x[0]}</span>
+                                <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
+                            </div>)
+                        :
+                            foundTracks.map((x, i) => 
+                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track + " " + styles.clickableTrack}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x._name}</span>
+                                <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x._artist}</span>
+                            </div>)
                     }
                 </div>
             </div>

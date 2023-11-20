@@ -194,6 +194,24 @@
   margin-top: 2vw;
 }
 
+.track {
+  margin-top: 0.5vw; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clickableTrack:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+  background-color: #3d461c3e;
+}
+
+.trackName {
+  font-size: min(3vh, 2.8vw);
+  max-width: 80%;
+}
+
 .loader {
   width: 24px;
   height: 24px;
