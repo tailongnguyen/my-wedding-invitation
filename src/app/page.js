@@ -41,7 +41,11 @@ export default function Home() {
   useEffect(() => {
     console.log("is mobile?", isMobile);
     const urlParams = new URLSearchParams(window.location.search);
-    setSide(urlParams.get("side"));
+    let side = urlParams.get("side");
+    if (side == null) {
+      side = "long";
+    }
+    setSide(side);
     setIsMobile(isMobile);
 
     const _myWeddingID = localStorage.getItem("myWeddingID");
@@ -163,7 +167,7 @@ export default function Home() {
             <Photos 
               bgImage="./Rectangle 34.png"
               image="./Rectangle 32.png"
-              link="https://drive.google.com/drive/folders/1GAp2LVLFfAfkpf3ezrCBQvEDKUapPMEm"
+              link="https://drive.google.com/drive/folders/1R3NtCdHZj4-TKydi79gJ6aAstNtH61Fb"
               content1="LADAKH"
               content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
               mode={_isMobile ? "center": "left"}
@@ -174,7 +178,7 @@ export default function Home() {
               image="./Rectangle 33.png"
               link="https://drive.google.com/drive/folders/1GAp2LVLFfAfkpf3ezrCBQvEDKUapPMEm"
               content1="HÀ NỘI"
-              content2="Cả hai đứa mình đều mê núi rừng, đã cùng nhau leo 3/4 đỉnh núi cao nhất Việt Nam. Vì thèm muốn được đến gần những ngọn núi tuyết của dãy Himalaya, chúng mình đã tới Ladakh, nơi có cảnh quan, con người đẹp tuyệt vời."
+              content2="Nàng là người Hà Nội gốc, chàng là người Hà Nội 2. Do đó, nét đẹp của phố phường và con người Hà Nội là một niềm đam mê chung của hai đứa từ những ngày đầu hẹn hò. Đi đâu xa vài ba ngày là lại than với nhau là nhớ Hà Nội quá.."
               mode={_isMobile ? "center": "right"}
             />
 
@@ -184,7 +188,7 @@ export default function Home() {
           </div>
 
           <div id="music" style={{height: _isMobile ? "120vw" : "60vw"}}>
-            <Music mode={_isMobile ? 1 : 0} />
+            <Music side={side} mode={_isMobile ? 1 : 0} />
           </div>
 
           <div id="map"  style={{height: _isMobile ? "120vw" : "100vw"}}>

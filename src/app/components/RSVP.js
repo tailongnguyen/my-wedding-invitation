@@ -14,8 +14,8 @@ export default function RSVP(props) {
     const [mode, setMode] = useState(0);
     const [showForm, setShowForm] = useState(false);
     const [isMoreThanOne, setIsMoreThanOne] = useState(false);
+    const [errorMsg, setErrorMsg] = useState(null);
 
-      
     function switchMode(callback) {
         setShowForm(true);
         setMode(1);
@@ -38,30 +38,44 @@ export default function RSVP(props) {
 
     async function sendResponse(callback) {
         console.log("sending response ...");
-        try {
-            const response = await fetch("https://ekyc-dev-internal.kalapa.vn/lw/rsvp?user_name=" + name + "&quantity=" + quantity, {
-                method: "POST"                
-            });
-            if (response.status != 200) {
+        if (name === null) {
+            setErrorMsg("Vui lòng điền tên của bạn");
+            callback();
+        }
+        else if (quantity === null) {
+            setErrorMsg("Vui lòng chọn số lượng người");
+            callback();
+        }
+        else {
+            try {
+                const response = await fetch("https://ekyc-dev-internal.kalapa.vn/lw/rsvp?user_name=" + name + "&quantity=" + quantity, {
+                    method: "POST"                
+                });
+                console.log(response.status);
+                if (response.status == 422) {
+                    setErrorMsg("Số lượng người phải là một số nguyên");
+                    callback();
+                }
+                else if (response.status == 200) {
+                    let data = await response.json();
+                    console.log(data);
+                    let newID = makeid(32);
+                    console.log("generating wedding ID ...", newID);
+                    localStorage.setItem("myWeddingID", newID);
+                    
+                    callback();
+                    setTimeout(props.onCancelRSVP, 200);
+                }   
+                else {
+                    alert("Something went wrong. Please try again later.");
+                    callback();
+                }         
+            }
+            catch (error) {
                 alert("Something went wrong. Please try again later.");
                 callback();
             }
-            else {
-                let data = await response.json();
-                console.log(data);
-                let newID = makeid(32);
-                console.log("generating wedding ID ...", newID);
-                localStorage.setItem("myWeddingID", newID);
-                
-                callback();
-                setTimeout(props.onCancelRSVP, 200);
-            }            
-        }
-        catch (error) {
-            alert("Something went wrong. Please try again later.");
-            callback();
-        }
-        
+        } 
     }
 
     function updateIsMoreThanOne(mode) {
@@ -142,7 +156,7 @@ export default function RSVP(props) {
                     : (
                         <div style={{"textAlign": "center", display: "flex", minHeight: "55vh", flexDirection: "column", alignItems: "center"}}>
                             <p style={{"fontSize": "min(3vh, 5vw)", width: "90%", marginBottom: "min(3vh, 4vw)"}}>Xin cho chúng mình biết thông tin của bạn để được đón tiếp một cách chu đáo nhất nhé!</p>
-                            <div style={{width: "80%", height: "min(5vh, 10vw)", display: "flex", alignItems: "center", position: "relative", marginBottom: "min(2vh, 4vw)"}}>
+                            <div style={{width: "80%", height: "min(5vh, 10vw)", display: "flex", alignItems: "center", color: "#3D461C",  position: "relative", marginBottom: "min(2vh, 4vw)"}}>
                                 <label style={{fontSize: "min(2.5vh, 5vw)", position: "absolute", top: -10, left: 10, padding: "0px 10px", backgroundColor: "#f6ead1"}}>Tên của bạn</label>
                                 <input onChange={updateName} type={"text"} className={styles.myInput + " " + dalatFont.className}></input>
                             </div>
@@ -179,6 +193,10 @@ export default function RSVP(props) {
                                     content="Xác nhận"
                                     handleClick={sendResponse}
                                 />
+                                {
+                                    errorMsg !== null && 
+                                        <p style={{color: "red", fontSize: "min(2.5vh, 5vw)", marginTop: "0.5vw"}}>{errorMsg}</p>
+                                }
                             </div>
                         </div>
                     )

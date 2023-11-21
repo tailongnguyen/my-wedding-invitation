@@ -21,6 +21,8 @@ export default function Music(props) {
     const [foundTracks, setFoundTracks] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
     const [topTracks, setTopTracks] = useState([]);
+    const [nextable, setNextable] = useState(true);
+    const [offset, setOffset] = useState(0);
 
     async function searchTrack(track) {
         setIsSearching(true);
@@ -80,9 +82,9 @@ export default function Music(props) {
         
     }
 
-    async function getTopTracks() {
+    async function getTopTracks(_offset) {
         try {
-            const response = await fetch(domain + "/track", {
+            const response = await fetch(domain + "/track?offset=" + _offset + "&side=" + props.side, {
                 method: "GET"                
             });
             if (response.status != 200) {
@@ -93,7 +95,13 @@ export default function Music(props) {
                 let data = await response.json();
                 let _topTracks = data.data.map(x => [x.track + " | " + x.artist, x.vote]);
                 console.log(_topTracks);
-                setTopTracks(_topTracks);                
+                setTopTracks(_topTracks);
+                if (_topTracks.length < 10) {
+                    setNextable(false);
+                }
+                else {
+                    setNextable(true);
+                }
             }            
         }
         catch (error) {
@@ -103,7 +111,7 @@ export default function Music(props) {
     }
 
     useEffect(() => {
-        getTopTracks();
+        getTopTracks(0);
         inputRef.current.addEventListener('keyup', event => {
             clearTimeout(timer);
           
@@ -122,7 +130,7 @@ export default function Music(props) {
     async function submitTrack(callback) {
         console.log("sending response ...");
         try {
-            const response = await fetch(domain + "/track?track=" + track._name + "&artist=" + track._artist, {
+            const response = await fetch(domain + "/track?track=" + track._name + "&artist=" + track._artist + "&side=" + props.side, {
                 method: "POST"                
             });
             if (response.status != 200) {
@@ -132,8 +140,9 @@ export default function Music(props) {
             }
             else {
                 let data = await response.json();
-                console.log(data);                
-                await getTopTracks();
+                console.log(data);
+                setOffset(0);
+                await getTopTracks(0);
                 setFoundTracks(null);
                 setTrack(null);
                 setSubmitStatus(true);
@@ -158,7 +167,7 @@ export default function Music(props) {
               props.mode == 0 && <img src="disc.png" style={{position: "absolute", marginTop: "10vw", width: "50vw"}}></img>
           }
 
-          <div style={{position: "absolute", right: "5vw", zIndex: 5, maxWidth: props.mode == 1 ? "55vw" : "70vw", paddingTop: "1vw"}}>
+          <div style={{position: "absolute", right: "5vw", zIndex: 5, width: props.mode == 1 ? "55vw" : "55vw", paddingTop: "1vw"}}>
             <p className={font7.className + " " + styles.textStyle3} style={{fontSize: "min(6vh, 5vw)", maxWidth: props.mode == 0 ? "70vw" : "50vw"}}>
                 Bạn muốn nghe bài hát gì tại đám cưới?
             </p>
@@ -187,21 +196,44 @@ export default function Music(props) {
                 props.mode == 0 &&
                 <div style={{color: "#532E18", marginTop: "1vw"}}>
                     <p className={font7.className} style={{fontSize: "min(5vh, 5vw)", marginBottom: "2vw",}}>
-                        {foundTracks === null ? "Top 10 bài đang được đăng ký nhiều nhất" : "Kết quả tìm kiếm"}
+                        {foundTracks === null ? "Danh sách bài hát được đăng ký" : "Kết quả tìm kiếm"}
                     </p>
                     {   foundTracks === null ?
                             topTracks.map((x, i) => 
-                            <div key={i} className={styles.track}>
-                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x[0]}</span>
+                            <div key={i} onClick={() => {
+                                let splits = x[0].split(" | ");
+                                chooseTrack({
+                                    _name: splits[0],
+                                    _artist: splits[1]
+                                })
+                            }} className={styles.track}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1 + offset}. {x[0]}</span>
                                 <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
                             </div>)
                         :
                             foundTracks.map((x, i) => 
-                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track + " " + styles.clickableTrack}>
+                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track}>
                                 <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x._name}</span>
                                 <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x._artist}</span>
                             </div>)
                     }
+                    
+                    <div className={dalatCapFont.className} style={{paddingTop: "1.5vw"}}>
+                        {
+                            offset > 0 &&
+                            <span onClick={() => {
+                                getTopTracks(offset - 10);
+                                setOffset(offset - 10);
+                            }} style={{textDecoration: "underline", marginRight: "0.5vw", cursor: "pointer", color: "#3D461C", fontSize: "min(2vh, 2vw)"}}>{"<< Trang trước"}</span>
+                        }
+                        {
+                            nextable &&
+                            <span onClick={() => {
+                                getTopTracks(offset + 10);
+                                setOffset(offset + 10);                                
+                            }} style={{textDecoration: "underline", cursor: "pointer", color: "#3D461C", fontSize: "min(2vh, 2vw)"}}>{"Trang tiếp theo >>"}</span>
+                        }
+                    </div>
                 </div>
             }            
           </div>
@@ -210,22 +242,45 @@ export default function Music(props) {
                 <img src="disc.png" style={{width: "50vw"}}></img>
                 <div style={{marginLeft: "10vw"}}>
                     <p className={font7.className} style={{fontSize: "min(5vh, 5vw)", marginBottom: "2vw",}}>
-                        {foundTracks === null ? "Top 10 bài đang được đăng ký nhiều nhất" : "Kết quả tìm kiếm"}
+                        {foundTracks === null ? "Danh sách bài hát được đăng ký" : "Kết quả tìm kiếm"}
                     </p>
 
                     {   foundTracks === null ?
                             topTracks.map((x, i) => 
-                            <div key={i} className={styles.track}>
-                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x[0]}</span>
+                            <div onClick={() => {
+                                let splits = x[0].split(" | ");
+                                chooseTrack({
+                                    _name: splits[0],
+                                    _artist: splits[1]
+                                })
+                            }} key={i} className={styles.track}>
+                                <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1 + offset}. {x[0]}</span>
                                 <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x[1]} lượt</span>
                             </div>)
                         :
                             foundTracks.map((x, i) => 
-                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track + " " + styles.clickableTrack}>
+                            <div key={i} onClick={() => {chooseTrack(x)}} className={styles.track}>
                                 <span className={dalatCapFont.className + " " + styles.trackName}>{i + 1}. {x._name}</span>
                                 <span style={{float: "right", fontSize: "min(2.5vh, 2.5vw)"}}>{x._artist}</span>
                             </div>)
                     }
+
+                    <div className={dalatCapFont.className} style={{paddingTop: "1.5vw"}}>
+                        {
+                            offset > 0 &&
+                            <span onClick={() => {
+                                getTopTracks(offset - 10);
+                                setOffset(offset - 10);
+                            }} style={{textDecoration: "underline", marginRight: "0.5vw", cursor: "pointer", color: "#3D461C", fontSize: "min(2vh, 2vw)"}}>{"<< Trang trước"}</span>
+                        }
+                        {
+                            nextable &&
+                            <span onClick={() => {
+                                getTopTracks(offset + 10);
+                                setOffset(offset + 10);                                
+                            }} style={{textDecoration: "underline", cursor: "pointer", color: "#3D461C", fontSize: "min(2vh, 2vw)"}}>{"Trang tiếp theo >>"}</span>
+                        }
+                    </div>
                 </div>
             </div>
           }

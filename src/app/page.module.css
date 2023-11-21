@@ -201,7 +201,7 @@
   align-items: center;
 }
 
-.clickableTrack:hover {
+.track:hover {
   transform: scale(1.1);
   cursor: pointer;
   background-color: #3d461c3e;
