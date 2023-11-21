@@ -121,7 +121,7 @@ export default function RSVP(props) {
                         <div style={{margin: "0px 20px", position: "relative", height: "min(30vh, 50vw)", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
                             <div className={styles.bgCircle}></div>
                             <p style={{"fontSize": "min(3vh, 5vw)"}}>vào hồi</p>
-                            <p style={{"fontSize": "min(11vh, 20vw)"}}>{props.side != "hanh" ? "10:30" : "17:30"}</p>
+                            <p style={{"fontSize": "min(11vh, 20vw)"}}>{props.side != "hanh" ? "10:00" : "17:30"}</p>
                             <p style={{"fontSize": "min(6vh, 8vw)"}}>{props.side != "hanh" ? "thứ 7 ngày 02 tháng 12" : "Chủ Nhật ngày 03/12"}</p>
                             <p style={{"fontSize": "min(3vh, 5vw)"}}>tại</p>
                         </div>
