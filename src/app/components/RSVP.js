@@ -38,7 +38,7 @@ export default function RSVP(props) {
 
     async function sendResponse(callback) {
         console.log("sending response ...");
-        if (name === null) {
+        if (name === null || name === "") {
             setErrorMsg("Vui lòng điền tên của bạn");
             callback();
         }
