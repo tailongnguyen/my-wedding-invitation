@@ -94,7 +94,7 @@ export default function RSVP(props) {
 
     function updateQuantity(event) {
         console.log(event.target.value);
-        setQuantity(parseInt(event.target.value));
+        setQuantity(parseInt(event.target.value) + 1);
     }
 
     return (
