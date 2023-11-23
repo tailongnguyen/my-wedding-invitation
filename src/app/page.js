@@ -28,6 +28,7 @@ export default function Home() {
   const [_isMobile, setIsMobile] = useState(false);
   const [bigPhoto, setBigPhoto] = useState(null);
   const [isComeBack, setIsComeBack] = useState(null);
+  const [isSubmited, setIsSubmited] = useState(false);
 
   function cancelRSVP() {
     setRsvpOpacity(0.0)
@@ -51,9 +52,8 @@ export default function Home() {
     const _myWeddingID = localStorage.getItem("myWeddingID");
     console.log("weddingID", _myWeddingID);
     // alert(_myWeddingID);
-    if (_myWeddingID !== null) {
-      setRsvpOpacity(0.0);
-      setMode(1);      
+    if (_myWeddingID !== null) {      
+      setIsSubmited(true);      
     }
     
     // if (isMobile) {
@@ -96,7 +96,7 @@ export default function Home() {
         
       {mode == 0 ?
         <div id="rsvp" style={{opacity: rsvpOpacity, transition: "opacity 1s"}}>          
-            <RSVP side={side} onCancelRSVP={cancelRSVP}/>                      
+            <RSVP isSubmited={isSubmited} side={side} onCancelRSVP={cancelRSVP}/>                      
         </div>
         : bigPhoto != null ? 
         <div style={{backgroundColor: "#e9e9e96b", height: "100vh", width: "100vw", display: "flex", flexDirection: "row", justifyContent: "center", alignItems: "center", position: "fixed"}}>

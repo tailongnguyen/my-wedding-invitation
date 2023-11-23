@@ -129,7 +129,7 @@ export default function RSVP(props) {
                         <p style={{"fontSize": "min(3vh, 6vw)", padding: "0 20px"}}>{props.side != "hanh" ? "nhà văn hóa cụm 6, thôn Phan Long, xã Tân Hội, huyện Đan Phượng, thành phố Hà Nội" : "trung tâm tiệc cưới Trống Đồng Palace, số 65 Quán Sứ, Hoàn Kiếm, Hà Nội"}</p>
                         <br></br>
 
-                        <div style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center"}}>
+                        <div style={{width: "100%", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: props.isSubmited ? "2vw" : 0}}>
                             <Button
                                 font="dalat"
                                 fontSize={"min(3.5vh, 6vw)"}
@@ -137,19 +137,22 @@ export default function RSVP(props) {
                                 color="#F6EAD1"
                                 height="min(8vh, 12vw)"
                                 width="min(28vh, 45vw)"
-                                content="Tôi sẽ tham dự"
-                                handleClick={switchMode}
+                                content={props.isSubmited ? "Thăm website" : "Tôi sẽ tham dự"}
+                                handleClick={props.isSubmited ? props.onCancelRSVP : switchMode}
                             />
                         </div>
-                        <p
-                            style={{
-                                fontSize: "min(3vh, 5vw)", marginTop: 10, cursor: "pointer",
-                                fontWeight: 600, textDecoration: "underline",
-                                marginBottom: 30
-                            }}
-                            onClick={props.onCancelRSVP}
-                        >Bỏ qua</p>
-
+                        
+                        {
+                            !props.isSubmited && 
+                                <p
+                                    style={{
+                                        fontSize: "min(3vh, 5vw)", marginTop: 10, cursor: "pointer",
+                                        fontWeight: 600, textDecoration: "underline",
+                                        marginBottom: 30
+                                    }}
+                                    onClick={props.onCancelRSVP}
+                                >Bỏ qua</p>
+                        }
 
                         </>
                     )
